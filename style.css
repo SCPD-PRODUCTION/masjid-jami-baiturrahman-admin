@@ -13,21 +13,6 @@
     --accent-orange: #f39c12;
 }
 
-/* Navigasi */
-nav {
-    background-color: var(--primary-green);
-    color: white;
-    padding: 1rem 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* PERBAIKAN: Gunakan box-shadow */
-}
-
-/* Halaman Login */
 .login-page {
     display: flex;
     justify-content: center;
@@ -42,6 +27,7 @@ nav {
     border-radius: 12px;
     text-align: center;
     width: 350px;
+    /* FIX: Menggunakan box-shadow agar tidak error */
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
@@ -67,7 +53,6 @@ nav {
     margin-top: 10px;
 }
 
-/* Tombol Buat Akun Baru */
 .btn-signup {
     display: block;
     margin-top: 15px;
@@ -78,28 +63,3 @@ nav {
 }
 
 .btn-signup:hover { text-decoration: underline; }
-
-/* Hero Section */
-.hero {
-    background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
-    color: white;
-    padding: 60px 10%;
-    display: flex;
-    align-items: center;
-    min-height: 500px;
-}
-
-.hero-image img { 
-    max-width: 100%; 
-    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3)); /* PERBAIKAN: Gunakan drop-shadow */
-}
-
-/* WA Floating */
-.wa-float {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    z-index: 100;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
-}

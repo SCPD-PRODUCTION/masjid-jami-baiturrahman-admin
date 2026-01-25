@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <header class="headbar">
         <div class="brand">ADMIN DASHBOARD</div>
         <div class="headbar-right">
@@ -17,19 +18,24 @@
     <main class="content">
         <div class="card">
             <h2>Edit Konten Utama Web Public</h2>
-            <hr>
-            <div class="form-edit">
-                <label>Judul Promo/Banner:</label>
-                <input type="text" id="hero-title" placeholder="Contoh: PSB 2026-2027">
-                
-                <label>Tahun Ajaran:</label>
-                <input type="text" id="hero-year" placeholder="Contoh: TA 2026/2027">
+            
+            <label>Judul Promo/Banner (Contoh: PSB 2026-2027)</label>
+            <input type="text" id="hero-title" placeholder="Masukkan judul...">
 
-                <button onclick="publishData()" class="btn-publish">PUBLISH KE WEB PUBLIC</button>
-                <p class="note">*Data akan otomatis terupdate di GitHub Repo Public</p>
-            </div>
+            <label>Tahun Ajaran</label>
+            <input type="text" id="hero-year" placeholder="Contoh: TA 2026/2027">
+
+            <label>Link Gambar Hero (Santri)</label>
+            <input type="text" id="hero-image" placeholder="Paste link gambar di sini...">
+
+            <button onclick="publishData()" class="btn-publish">PUBLISH KE WEB PUBLIC</button>
+            
+            <p style="margin-top: 15px; font-size: 12px; color: #888; text-align: center;">
+                *Data akan otomatis terupdate di GitHub Repo Public
+            </p>
         </div>
     </main>
+
     <script src="script.js"></script>
 </body>
 </html>

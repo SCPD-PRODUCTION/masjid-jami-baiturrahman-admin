@@ -1,56 +1,52 @@
 const API_URL = "http://localhost:2011/api";
 
+// Fungsi Pendaftaran Akun
+async function handleRegister() {
+    const nama = document.getElementById('reg-nama').value;
+    const email = document.getElementById('reg-email').value;
+    const password = document.getElementById('reg-password').value;
+
+    if(!nama || !email || !password) return alert("Semua data harus diisi!");
+
+    try {
+        const res = await fetch(`${API_URL}/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nama, email, password })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            alert("Akun berhasil dibuat! Silakan login.");
+            window.location.href = 'index.html';
+        } else {
+            alert("Gagal: " + data.message);
+        }
+    } catch (err) {
+        alert("Pastikan Server Node.js Anda sudah dijalankan!");
+    }
+}
+
 // Fungsi Login
 async function handleLogin() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const res = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    });
+    try {
+        const res = await fetch(`${API_URL}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
-    const data = await res.json();
-    if (data.success) {
-        localStorage.setItem('admin_name', data.user);
-        window.location.href = 'dashboard.html';
-    } else {
-        alert("Login Gagal! Periksa kembali email dan password.");
-    }
-}
-
-// Cek Proteksi Halaman Dashboard
-if (window.location.pathname.includes('dashboard.html')) {
-    const user = localStorage.getItem('admin_name');
-    if (!user) window.location.href = 'index.html';
-    document.getElementById('admin-name').innerText = user;
-}
-
-// Fungsi Push ke GitHub Public
-async function publishData() {
-    const contentData = {
-        hero: {
-            title: document.getElementById('hero-title').value,
-            year: document.getElementById('hero-year').value
+        const data = await res.json();
+        if (data.success) {
+            localStorage.setItem('isLoggedIn', 'true');
+            window.location.href = 'dashboard.html';
+        } else {
+            alert("Email atau Password salah!");
         }
-    };
-
-    const res = await fetch(`${API_URL}/update-public`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contentData })
-    });
-
-    const result = await res.json();
-    if (result.success) {
-        alert("Berhasil! Web Public telah diperbarui.");
-    } else {
-        alert("Gagal memperbarui Web Public.");
+    } catch (err) {
+        alert("Server belum aktif!");
     }
-}
-
-function logout() {
-    localStorage.clear();
-    window.location.href = 'index.html';
 }

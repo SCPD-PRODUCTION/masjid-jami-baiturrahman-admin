@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin - Baiturrahman</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="headbar">
+        <div class="brand">ADMIN DASHBOARD</div>
+        <div class="headbar-right">
+            <span id="admin-name">Administrator</span>
+            <button onclick="logout()" class="btn-logout">LOGOUT</button>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="card">
+            <h2>Edit Konten Utama Web Public</h2>
+            <hr>
+            <div class="form-edit">
+                <label>Judul Promo/Banner:</label>
+                <input type="text" id="hero-title" placeholder="Contoh: PSB 2026-2027">
+                
+                <label>Tahun Ajaran:</label>
+                <input type="text" id="hero-year" placeholder="Contoh: TA 2026/2027">
+
+                <button onclick="publishData()" class="btn-publish">PUBLISH KE WEB PUBLIC</button>
+                <p class="note">*Data akan otomatis terupdate di GitHub Repo Public</p>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

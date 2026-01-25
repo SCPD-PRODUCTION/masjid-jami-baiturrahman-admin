@@ -1,0 +1,134 @@
+/* Reset Dasar */
+* { 
+    box-sizing: border-box; 
+    font-family: 'Segoe UI', sans-serif; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body { 
+    background: #f4f7f4; 
+}
+
+/* Halaman Login */
+.login-page { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background: #1a5d1a; 
+}
+
+.login-card { 
+    background: white; 
+    padding: 40px; 
+    border-radius: 12px; 
+    text-align: center; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+}
+
+.login-card h1 { 
+    color: #1a5d1a; 
+    margin-bottom: 10px; 
+}
+
+.login-card input { 
+    display: block; 
+    width: 300px; 
+    padding: 12px; 
+    margin: 15px 0; 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+}
+
+.login-card button { 
+    width: 100%; 
+    padding: 12px; 
+    background: #1a5d1a; 
+    color: white; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: bold; 
+}
+
+/* Headbar Dashboard */
+.headbar { 
+    background: #1a5d1a; 
+    color: white; 
+    padding: 15px 40px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    position: sticky; 
+    top: 0; 
+    z-index: 100;
+}
+
+.headbar-right { 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+}
+
+.btn-logout { 
+    background: #d9534f; 
+    color: white; 
+    border: none; 
+    padding: 8px 15px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+
+/* Konten Dashboard */
+.content { 
+    padding: 40px; 
+    max-width: 800px; 
+    margin: auto; 
+}
+
+.card { 
+    background: white; 
+    padding: 30px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+}
+
+.form-edit label { 
+    display: block; 
+    margin-top: 15px; 
+    font-weight: bold; 
+    color: #333; 
+}
+
+.form-edit input { 
+    width: 100%; 
+    padding: 10px; 
+    margin-top: 5px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+
+.btn-publish { 
+    width: 100%; 
+    margin-top: 25px; 
+    padding: 15px; 
+    background: #f0ad4e; 
+    color: white; 
+    border: none; 
+    border-radius: 6px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    cursor: pointer; 
+}
+
+.btn-publish:hover {
+    background: #ec971f;
+}
+
+.note { 
+    font-size: 12px; 
+    color: #777; 
+    text-align: center; 
+    margin-top: 10px; 
+}

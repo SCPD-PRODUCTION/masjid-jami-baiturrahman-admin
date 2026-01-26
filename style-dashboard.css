@@ -1,86 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
-
-:root {
-    --primary-green: #1a5d1a; /* Hijau Baiturrahman */
-    --light-green: #2d7a2d;
-    --accent-orange: #f39c12;
-}
-
-body { background-color: #f4f7f4; }
-
-/* HEADBAR */
-.headbar {
-    background-color: var(--primary-green);
-    color: white;
-    padding: 15px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.brand { font-weight: 900; letter-spacing: 1px; }
-
-.headbar-right { display: flex; align-items: center; gap: 20px; }
-
-.btn-logout {
-    background-color: transparent;
-    border: 1px solid white;
-    color: white;
-    padding: 5px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-logout:hover { background: white; color: var(--primary-green); }
-
-/* CONTENT & CARD */
-.content { padding: 40px 5%; display: flex; justify-content: center; }
-
-.card {
+/* CSS KHUSUS ADMIN */
+.admin-card-box {
     background: white;
-    padding: 30px;
+    padding: 25px;
     border-radius: 12px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
-h2 { color: var(--primary-green); margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+.section-title {
+    color: #2d7a3e;
+    border-left: 5px solid #2d7a3e;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
 
-label { display: block; margin-top: 15px; font-weight: bold; font-size: 14px; color: #555; }
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
 
-input {
+.admin-table {
     width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.admin-table th {
+    background: #f8f9fa;
     padding: 12px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    outline: none;
+    text-align: left;
+    border-bottom: 2px solid #2d7a3e;
 }
 
-input:focus { border-color: var(--primary-green); }
+.admin-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
 
-.btn-publish {
-    width: 100%;
-    padding: 15px;
-    background-color: var(--accent-orange);
+.btn-edit-sm { background: #ff9800; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+.btn-delete-sm { background: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+
+.add-btn {
+    background: #2d7a3e;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-weight: 900;
-    margin-top: 30px;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
 }
-
-.btn-publish:hover { background-color: #d35400; transform: translateY(-2px); }

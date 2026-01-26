@@ -2,42 +2,99 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - Baiturrahman</title>
     <link rel="stylesheet" href="style-dashboard.css">
 </head>
-<body>
+<body style="background: #f4f4f4;">
 
-    <header class="headbar">
-        <div class="brand">ADMIN DASHBOARD</div>
-        <div class="headbar-right">
-            <span id="admin-name">Administrator</span>
-            <a href="index.html" class="btn-logout">LOGOUT</a>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-img">
+                    <svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="white"/></svg>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="active">DASHBOARD ADMIN</a></li>
+                <li><a href="javascript:void(0)" onclick="handleLogout()" style="background: #ff4444;">LOGOUT</a></li>
+            </ul>
         </div>
-    </header>
+    </nav>
 
-    <main class="content">
-        <div class="card">
-            <h2>Edit Konten Utama Web Public</h2>
-            
-            <label>Judul Promo/Banner (Contoh: PSB 2026-2027)</label>
-            <input type="text" id="hero-title" placeholder="Masukkan judul...">
-
-            <label>Tahun Ajaran</label>
-            <input type="text" id="hero-year" placeholder="Contoh: TA 2026/2027">
-
-            <label>Link Gambar Hero (Santri)</label>
-            <input type="text" id="hero-image" placeholder="Paste link gambar di sini...">
-
-            <button onclick="publishData()" class="btn-publish">PUBLISH KE WEB PUBLIC</button>
-            
-            <p style="margin-top: 15px; font-size: 12px; color: #888; text-align: center;">
-                *Data akan otomatis terupdate di GitHub Repo Public
-            </p>
+    <section class="hero" style="padding: 30px 20px;">
+        <div class="hero-content">
+            <div class="hero-left">
+                <div class="psb-title" style="font-size: 32px;">Panel Kendali Konten</div>
+                <p>Update data PSB, Program Unggulan, dan Testimoni secara Real-time.</p>
+            </div>
         </div>
-    </main>
+    </section>
+
+    <div style="max-width: 1200px; margin: -40px auto 40px; padding: 0 20px; position: relative; z-index: 10;">
+        
+        <div class="admin-card-box">
+            <h3 class="section-title">⚙️ Pengaturan Banner Utama</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Tahun Ajaran PSB</label>
+                    <input type="text" id="edit_psbYear" placeholder="Contoh: 2026 - 2027">
+                </div>
+                <div class="form-group">
+                    <label>Informasi Gelombang 1</label>
+                    <input type="text" id="edit_gelombang1">
+                </div>
+            </div>
+            <button class="save-btn" onclick="saveHeroData()">Simpan Perubahan Banner</button>
+        </div>
+
+        <div class="admin-card-box" style="margin-top: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 class="section-title" style="margin: 0;">🏆 7 Program Unggulan</h3>
+                <button class="add-btn" onclick="openProgramModal()">+ Tambah Program</button>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Ikon</th>
+                        <th>Nama Program</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="programTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div id="adminModal" class="admin-panel">
+        <div class="admin-content" style="max-width: 500px;">
+            <div class="admin-header">
+                <h2 id="modalTitle">Tambah Program</h2>
+                <button class="admin-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="form-group">
+                <label>Pilih Ikon (Emoji)</label>
+                <input type="text" id="prog_icon" placeholder="Contoh: 📚">
+            </div>
+            <div class="form-group">
+                <label>Nama Program</label>
+                <input type="text" id="prog_title" placeholder="Nama program...">
+            </div>
+            <button class="save-btn" onclick="handleSaveProgram()">SUBMIT DATA</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
+    <script>
+        // Cek Login
+        if(localStorage.getItem('isLoggedIn') !== 'true') window.location.href = 'index.html';
+        
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>
-
-

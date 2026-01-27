@@ -3,99 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Baiturrahman</title>
-    <link rel="stylesheet" href="style-dashboard.css">
-</head>
-<body style="background: #f4f4f4;">
-
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <div class="logo-img">
-                    <svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="white"/></svg>
-                </div>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#" class="active">DASHBOARD ADMIN</a></li>
-                <li><a href="javascript:void(0)" onclick="handleLogout()" style="background: #ff4444;">LOGOUT</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <section class="hero" style="padding: 30px 20px;">
-        <div class="hero-content">
-            <div class="hero-left">
-                <div class="psb-title" style="font-size: 32px;">Panel Kendali Konten</div>
-                <p>Update data PSB, Program Unggulan, dan Testimoni secara Real-time.</p>
-            </div>
-        </div>
-    </section>
-
-    <div style="max-width: 1200px; margin: -40px auto 40px; padding: 0 20px; position: relative; z-index: 10;">
+    <title>Dashboard Admin - Masjid Jami Baiturrahman</title>
+    <style>
+        body { font-family: sans-serif; color: #333; margin: 20px; }
+        ul { list-style: none; padding: 0; }
+        li { display: inline; margin-right: 15px; font-weight: bold; }
+        a { color: blue; text-decoration: underline; cursor: pointer; }
+        .logout { color: white; background: red; padding: 2px 5px; text-decoration: none; }
         
-        <div class="admin-card-box">
-            <h3 class="section-title">⚙️ Pengaturan Banner Utama</h3>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Tahun Ajaran PSB</label>
-                    <input type="text" id="edit_psbYear" placeholder="Contoh: 2026 - 2027">
-                </div>
-                <div class="form-group">
-                    <label>Informasi Gelombang 1</label>
-                    <input type="text" id="edit_gelombang1">
-                </div>
-            </div>
-            <button class="save-btn" onclick="saveHeroData()">Simpan Perubahan Banner</button>
+        h1 { font-size: 28px; margin-top: 30px; }
+        p { color: #666; }
+
+        /* Kotak UI dari screenshot lo */
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 40px;
+            position: relative;
+        }
+        .card-title {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            color: #2d7a3e;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 300px;
+        }
+        .btn-publish {
+            background: #2d7a3e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li><a href="#">DASHBOARD ADMIN</a></li>
+        <li><a href="#" class="logout">LOGOUT</a></li>
+    </ul>
+
+    <h1>Panel Kendali Konten</h1>
+    <p>Update data Informasi Masjid, Jadwal Kajian, dan Kas secara Real-time.</p>
+
+    <div class="card">
+        <div class="card-title">
+            <span>⚙️</span> Pengaturan Banner Utama Masjid
         </div>
 
-        <div class="admin-card-box" style="margin-top: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 class="section-title" style="margin: 0;">🏆 7 Program Unggulan</h3>
-                <button class="add-btn" onclick="openProgramModal()">+ Tambah Program</button>
-            </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Ikon</th>
-                        <th>Nama Program</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="programTableBody">
-                    </tbody>
-            </table>
+        <div class="form-group">
+            <label>Judul Informasi:</label>
+            <input type="text" id="judulInfo" placeholder="Contoh: Jadwal Sholat Idul Fitri">
+            
+            <label>Sub-Deskripsi:</label>
+            <input type="text" id="subDeskripsi" placeholder="Contoh: Pelaksanaan 1 Syawal 1447 H">
         </div>
 
+        <div class="form-group">
+            <label>Kegiatan Terdekat:</label>
+            <input type="text" id="kegiatan" placeholder="Contoh: Kajian Rutin Maghrib">
+        </div>
+
+        <button class="btn-publish" onclick="publishKePublic()">PUBLISH KE WEB PUBLIC</button>
     </div>
 
-    <div id="adminModal" class="admin-panel">
-        <div class="admin-content" style="max-width: 500px;">
-            <div class="admin-header">
-                <h2 id="modalTitle">Tambah Program</h2>
-                <button class="admin-close" onclick="closeModal()">✕</button>
-            </div>
-            <div class="form-group">
-                <label>Pilih Ikon (Emoji)</label>
-                <input type="text" id="prog_icon" placeholder="Contoh: 📚">
-            </div>
-            <div class="form-group">
-                <label>Nama Program</label>
-                <input type="text" id="prog_title" placeholder="Nama program...">
-            </div>
-            <button class="save-btn" onclick="handleSaveProgram()">SUBMIT DATA</button>
-        </div>
-    </div>
+    <div id="status" style="margin-top: 20px; font-weight: bold;"></div>
 
     <script src="script-dashboard.js"></script>
-    <script>
-        // Cek Login
-        if(localStorage.getItem('isLoggedIn') !== 'true') window.location.href = 'index.html';
-        
-        function handleLogout() {
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = 'index.html';
-        }
-    </script>
 </body>
 </html>
-

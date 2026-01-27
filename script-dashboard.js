@@ -1,67 +1,53 @@
-const API_URL = "http://localhost:2011/api";
-let currentEditIndex = null;
+async function publishKePublic() {
+    const statusDiv = document.getElementById('status');
+    
+    // Ambil data dari input UI lo
+    const judul = document.getElementById('judulInfo').value;
+    const sub = document.getElementById('subDeskripsi').value;
+    const kegiatan = document.getElementById('kegiatan').value;
 
-// Simulasi Data (Ganti dengan fetch dari data.json nanti)
-let programList = [
-    { icon: "🏆", title: "Pencapaian Prestasi Akademik" },
-    { icon: "🎖️", title: "Penguasaan Tahfidz Minimal 4 Juz" }
-];
-
-// 1. Tampilkan Data ke Tabel
-function renderPrograms() {
-    const tableBody = document.getElementById('programTableBody');
-    tableBody.innerHTML = '';
-
-    programList.forEach((prog, index) => {
-        tableBody.innerHTML += `
-            <tr>
-                <td style="font-size: 24px;">${prog.icon}</td>
-                <td>${prog.title}</td>
-                <td>
-                    <button class="btn-edit-sm" onclick="editProgram(${index})">EDIT</button>
-                    <button class="btn-delete-sm" onclick="deleteProgram(${index})">HAPUS</button>
-                </td>
-            </tr>
-        `;
-    });
-}
-
-// 2. Fungsi Hapus
-function deleteProgram(index) {
-    if(confirm("Apakah Anda yakin ingin menghapus program ini?")) {
-        programList.splice(index, 1);
-        renderPrograms();
-        // Disini panggil API Update ke GitHub/Server
-    }
-}
-
-// 3. Modal Control
-function openProgramModal() {
-    document.getElementById('adminModal').classList.add('active');
-}
-
-function closeModal() {
-    document.getElementById('adminModal').classList.remove('active');
-    currentEditIndex = null;
-}
-
-// 4. Simpan Data Baru / Edit
-function handleSaveProgram() {
-    const icon = document.getElementById('prog_icon').value;
-    const title = document.getElementById('prog_title').value;
-
-    if(!icon || !title) return alert("Isi semua data!");
-
-    if(currentEditIndex !== null) {
-        programList[currentEditIndex] = { icon, title };
-    } else {
-        programList.push({ icon, title });
+    if (!judul || !kegiatan) {
+        alert("Woi, minimal Judul dan Kegiatan diisi!");
+        return;
     }
 
-    renderPrograms();
-    closeModal();
-    alert("Berhasil diperbarui!");
-}
+    statusDiv.innerText = "⏳ Memproses ke GitHub API via Localhost:2011...";
+    statusDiv.style.color = "orange";
 
-// Jalankan saat load
-renderPrograms();
+    // Struktur data yang dikirim (Sesuaikan dengan data.json di repo masjid lo)
+    const payload = {
+        contentData: {
+            namaMasjid: "Masjid Jami Baiturrahman",
+            banner: {
+                title: judul,
+                subtitle: sub
+            },
+            nextEvent: kegiatan,
+            updatedAt: new Date().toLocaleString('id-ID')
+        }
+    };
+
+    try {
+        // Nembak ke API update-public di server.js lo
+        const response = await fetch('http://localhost:2011/api/update-public', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            statusDiv.innerText = "✅ BERHASIL! Web Jami Baiturrahman sudah terupdate.";
+            statusDiv.style.color = "green";
+            alert("🚀 Update sukses di GitHub!");
+        } else {
+            statusDiv.innerText = "❌ GAGAL: " + result.error;
+            statusDiv.style.color = "red";
+        }
+    } catch (error) {
+        statusDiv.innerText = "❌ SERVER ERROR! Pastikan 'node server.js' di G:/server jalan.";
+        statusDiv.style.color = "red";
+        console.error(error);
+    }
+}

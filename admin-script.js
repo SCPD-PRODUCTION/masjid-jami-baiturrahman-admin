@@ -222,6 +222,7 @@ async function loadAllData() {
         }
         
         loadJadwalGrid();
+        loadBannerGrid();
         loadProgramGrid();
         loadPengurusGrid();
         
@@ -241,6 +242,7 @@ function getDefaultData() {
             subtitle: 'Pusat Kegiatan Ibadah & Dakwah Umat',
             tagline: 'Makmurkan Masjid dengan Iman dan Amal Shaleh'
         },
+        banners: [],
         welcomeText: '🕌 Selamat Datang di Masjid Jami Baiturrahman 🕌',
         jadwalSholat: [
             { waktu: 'Subuh', jam: '04:30' },
@@ -462,6 +464,145 @@ async function deleteJadwal(index) {
     
     if (await saveDataToServer(data)) {
         loadJadwalGrid();
+    }
+}
+
+// ========================================
+// BANNER SLIDER FUNCTIONS
+// ========================================
+
+function loadBannerGrid() {
+    const data = getCurrentData();
+    const grid = document.getElementById('bannerGrid');
+    
+    if (!data.banners || data.banners.length === 0) {
+        grid.innerHTML = '<p style="color: #666;">Belum ada banner. Klik tombol Tambah untuk menambahkan banner baru.</p>';
+        return;
+    }
+    
+    grid.innerHTML = data.banners.map((banner, i) => `
+        <div class="item-card">
+            <div style="width: 100%; height: 150px; background: #f5f5f5; border-radius: 8px; overflow: hidden; margin-bottom: 10px;">
+                <img src="${banner.image}" alt="${banner.title}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <h4>📷 ${banner.title}</h4>
+            <p style="color: #666; font-size: 14px;">${banner.description}</p>
+            <div class="item-actions">
+                <button class="btn-edit" onclick="editBanner(${i})">Edit</button>
+                <button class="btn-delete" onclick="deleteBanner(${i})">Hapus</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openAddBanner() {
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    
+    modalTitle.textContent = 'Tambah Banner';
+    modalBody.innerHTML = `
+        <div class="form-group">
+            <label>Judul Banner</label>
+            <input type="text" id="newBannerTitle" placeholder="Contoh: Perpustakaan Islami">
+        </div>
+        <div class="form-group">
+            <label>Deskripsi</label>
+            <textarea id="newBannerDescription" placeholder="Deskripsi singkat tentang banner..." rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label>URL Gambar</label>
+            <input type="text" id="newBannerImage" placeholder="Contoh: images/banner1.jpg atau URL lengkap">
+            <small style="display: block; margin-top: 5px; color: #666;">
+                Masukkan path relatif (contoh: images/banner.jpg) atau URL lengkap
+            </small>
+        </div>
+        <button class="btn btn-primary" onclick="addBanner()">Simpan Banner</button>
+    `;
+    
+    document.getElementById('editModal').classList.add('active');
+}
+
+async function addBanner() {
+    const title = document.getElementById('newBannerTitle').value;
+    const description = document.getElementById('newBannerDescription').value;
+    const image = document.getElementById('newBannerImage').value;
+    
+    if (!title || !description || !image) {
+        showError('Semua field harus diisi!');
+        return;
+    }
+    
+    const data = getCurrentData();
+    if (!data.banners) data.banners = [];
+    
+    data.banners.push({ title, description, image });
+    
+    if (await saveDataToServer(data)) {
+        loadBannerGrid();
+        closeModal();
+    }
+}
+
+function editBanner(index) {
+    const data = getCurrentData();
+    const banner = data.banners[index];
+    
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    
+    modalTitle.textContent = 'Edit Banner';
+    modalBody.innerHTML = `
+        <div class="form-group">
+            <label>Judul Banner</label>
+            <input type="text" id="editBannerTitle" value="${banner.title}">
+        </div>
+        <div class="form-group">
+            <label>Deskripsi</label>
+            <textarea id="editBannerDescription" rows="3">${banner.description}</textarea>
+        </div>
+        <div class="form-group">
+            <label>URL Gambar</label>
+            <input type="text" id="editBannerImage" value="${banner.image}">
+            <small style="display: block; margin-top: 5px; color: #666;">
+                Masukkan path relatif (contoh: images/banner.jpg) atau URL lengkap
+            </small>
+        </div>
+        <div style="margin: 10px 0;">
+            <img src="${banner.image}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+        </div>
+        <button class="btn btn-primary" onclick="updateBanner(${index})">Update Banner</button>
+    `;
+    
+    document.getElementById('editModal').classList.add('active');
+}
+
+async function updateBanner(index) {
+    const title = document.getElementById('editBannerTitle').value;
+    const description = document.getElementById('editBannerDescription').value;
+    const image = document.getElementById('editBannerImage').value;
+    
+    if (!title || !description || !image) {
+        showError('Semua field harus diisi!');
+        return;
+    }
+    
+    const data = getCurrentData();
+    data.banners[index] = { title, description, image };
+    
+    if (await saveDataToServer(data)) {
+        loadBannerGrid();
+        closeModal();
+    }
+}
+
+async function deleteBanner(index) {
+    if (!confirm('Yakin ingin menghapus banner ini?')) return;
+    
+    const data = getCurrentData();
+    data.banners.splice(index, 1);
+    
+    if (await saveDataToServer(data)) {
+        loadBannerGrid();
     }
 }
 

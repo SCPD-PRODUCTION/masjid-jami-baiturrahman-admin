@@ -97,7 +97,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const data = await response.json();
 
         if (data.success) {
-            // Simpan data user ke localStorage
             localStorage.setItem('masjid_user', data.data.nama);
             localStorage.setItem('masjid_user_email', data.data.email);
             localStorage.setItem('masjid_user_id', data.data.id);
@@ -125,7 +124,6 @@ document.getElementById('signupForm').addEventListener('submit', async function(
     const password = document.getElementById('signupPassword').value;
     const confirmPassword = document.getElementById('signupConfirmPassword').value;
 
-    // Validasi
     if (!email || !username || !password || !confirmPassword) {
         showError('Semua field harus diisi!');
         return;
@@ -163,7 +161,6 @@ document.getElementById('signupForm').addEventListener('submit', async function(
         if (data.success) {
             showSuccess('Registrasi berhasil! Silakan login.');
             setTimeout(showLogin, 2000);
-            // Reset form
             document.getElementById('signupForm').reset();
         } else {
             showError(data.message || 'Registrasi gagal!');
@@ -182,8 +179,6 @@ function showDashboard() {
     document.getElementById('loginContainer').style.display = 'none';
     document.getElementById('adminContainer').style.display = 'block';
     document.getElementById('currentUser').textContent = localStorage.getItem('masjid_user') || 'Admin';
-    
-    // Load data dari server
     loadAllData();
 }
 
@@ -196,7 +191,6 @@ function logout() {
     }
 }
 
-// Check if already logged in
 window.addEventListener('load', function() {
     if (localStorage.getItem('masjid_user')) {
         showDashboard();
@@ -204,7 +198,7 @@ window.addEventListener('load', function() {
 });
 
 // ========================================
-// DATA MANAGEMENT - Terhubung dengan Server
+// DATA MANAGEMENT
 // ========================================
 
 async function loadAllData() {
@@ -213,10 +207,9 @@ async function loadAllData() {
         const result = await response.json();
         
         if (result.success && result.data && result.data.length > 0) {
-            const websiteData = result.data[0]; // Ambil data pertama
+            const websiteData = result.data[0];
             populateFormFields(websiteData);
         } else {
-            // Jika belum ada data, gunakan default
             const defaultData = getDefaultData();
             populateFormFields(defaultData);
         }
@@ -229,7 +222,6 @@ async function loadAllData() {
     } catch (error) {
         console.error('Error loading data:', error);
         showError('Gagal memuat data dari server');
-        // Load default data jika error
         const defaultData = getDefaultData();
         populateFormFields(defaultData);
     }
@@ -244,53 +236,29 @@ function getDefaultData() {
         },
         banners: [],
         welcomeText: '🕌 Selamat Datang di Masjid Jami Baiturrahman 🕌',
-        jadwalSholat: [
-            { waktu: 'Subuh', jam: '04:30' },
-            { waktu: 'Syuruq', jam: '05:45' },
-            { waktu: 'Dhuha', jam: '06:15' },
-            { waktu: 'Dzuhur', jam: '12:00' },
-            { waktu: 'Ashar', jam: '15:15' },
-            { waktu: 'Maghrib', jam: '18:00' },
-            { waktu: 'Isya', jam: '19:15' }
-        ],
-        programs: [
-            { icon: '🕌', title: 'Sholat Berjamaah 5 Waktu', description: 'Setiap hari' },
-            { icon: '📖', title: 'Kajian Rutin Mingguan', description: 'Setiap Ahad pagi' },
-            { icon: '🎓', title: 'TPA/TPQ', description: 'Senin - Jumat sore' },
-            { icon: '🤲', title: 'Kajian Tafsir', description: 'Rabu malam' }
-        ],
-        pengurus: [
-            { name: 'H. Ahmad Fauzi', role: 'Ketua Takmir', description: 'Ketua DKM' },
-            { name: 'Ustadz Muhammad', role: 'Imam Masjid', description: 'Imam & Khatib' },
-            { name: 'H. Abdullah', role: 'Bendahara', description: 'Pengelola Keuangan' }
-        ],
+        jadwalSholat: [],
+        programs: [],
+        pengurus: [],
         contact: {
             phone: '0821-1638-6662',
             website: 'www.baiturrahman.com',
-            address: 'Jl. Rancakole Kp. Bojong Kecamatan Ciparay, Kabupaten Bandung, Provinsi Jawa Barat'
+            address: 'Jl. Rancakole Kp. Bojong Kecamatan Ciparay, Kabupaten Bandung'
         }
     };
 }
 
 function populateFormFields(data) {
-    // Hero Section
     if (data.hero) {
         document.getElementById('heroTitle').value = data.hero.title || '';
         document.getElementById('heroSubtitle').value = data.hero.subtitle || '';
         document.getElementById('heroTagline').value = data.hero.tagline || '';
     }
-    
-    // Welcome Text
     document.getElementById('welcomeText').value = data.welcomeText || '';
-    
-    // Contact Info
     if (data.contact) {
         document.getElementById('phone').value = data.contact.phone || '';
         document.getElementById('website').value = data.contact.website || '';
         document.getElementById('address').value = data.contact.address || '';
     }
-    
-    // Store to localStorage for quick access
     localStorage.setItem('websiteData', JSON.stringify(data));
 }
 
@@ -299,23 +267,18 @@ function getCurrentData() {
     return stored ? JSON.parse(stored) : getDefaultData();
 }
 
-// ========================================
-// SAVE FUNCTIONS
-// ========================================
-
 async function saveDataToServer(data) {
     try {
         const response = await fetch(`${API_URL}/data`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ data: [data] }) // Wrap in array
+            body: JSON.stringify({ data: [data] })
         });
         
         const result = await response.json();
         
         if (result.success) {
             showSuccess('✅ Data berhasil disimpan!');
-            // Update localStorage
             localStorage.setItem('websiteData', JSON.stringify(data));
             return true;
         } else {
@@ -329,6 +292,7 @@ async function saveDataToServer(data) {
     }
 }
 
+// SAVE HELPERS
 async function saveHeroSettings() {
     const data = getCurrentData();
     data.hero = {
@@ -468,7 +432,7 @@ async function deleteJadwal(index) {
 }
 
 // ========================================
-// BANNER SLIDER FUNCTIONS
+// BANNER SLIDER FUNCTIONS (UPDATED - FILE UPLOAD)
 // ========================================
 
 function loadBannerGrid() {
@@ -495,11 +459,21 @@ function loadBannerGrid() {
     `).join('');
 }
 
+// Helper: Convert File to Base64
+function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
 function openAddBanner() {
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     
-    modalTitle.textContent = 'Tambah Banner';
+    modalTitle.textContent = 'Tambah Banner Baru';
     modalBody.innerHTML = `
         <div class="form-group">
             <label>Judul Banner</label>
@@ -510,11 +484,15 @@ function openAddBanner() {
             <textarea id="newBannerDescription" placeholder="Deskripsi singkat tentang banner..." rows="3"></textarea>
         </div>
         <div class="form-group">
-            <label>URL Gambar</label>
-            <input type="text" id="newBannerImage" placeholder="Contoh: images/banner1.jpg atau URL lengkap">
+            <label>Upload Gambar (Kamera/Galeri)</label>
+            <input type="file" id="newBannerFileInput" accept="image/*" onchange="previewImage(this, 'previewNewBanner')">
             <small style="display: block; margin-top: 5px; color: #666;">
-                Masukkan path relatif (contoh: images/banner.jpg) atau URL lengkap
+                Format: JPG, PNG, JPEG. Ukuran maks disarankan < 1MB.
             </small>
+        </div>
+        <div style="margin: 10px 0; display:none;" id="previewContainer">
+            <p style="margin-bottom:5px; font-size:12px;">Preview:</p>
+            <img id="previewNewBanner" src="" style="max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #ddd;">
         </div>
         <button class="btn btn-primary" onclick="addBanner()">Simpan Banner</button>
     `;
@@ -522,24 +500,54 @@ function openAddBanner() {
     document.getElementById('editModal').classList.add('active');
 }
 
+// Fungsi untuk menampilkan preview saat user memilih file
+function previewImage(input, previewId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById(previewId);
+            preview.src = e.target.result;
+            preview.parentElement.style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 async function addBanner() {
     const title = document.getElementById('newBannerTitle').value;
     const description = document.getElementById('newBannerDescription').value;
-    const image = document.getElementById('newBannerImage').value;
+    const fileInput = document.getElementById('newBannerFileInput');
     
-    if (!title || !description || !image) {
-        showError('Semua field harus diisi!');
+    if (!title || !description) {
+        showError('Judul dan Deskripsi harus diisi!');
         return;
     }
-    
-    const data = getCurrentData();
-    if (!data.banners) data.banners = [];
-    
-    data.banners.push({ title, description, image });
-    
-    if (await saveDataToServer(data)) {
-        loadBannerGrid();
-        closeModal();
+
+    if (fileInput.files.length === 0) {
+        showError('Silakan pilih gambar terlebih dahulu!');
+        return;
+    }
+
+    // Convert gambar ke Base64 string
+    try {
+        const imageBase64 = await readFileAsDataURL(fileInput.files[0]);
+        
+        const data = getCurrentData();
+        if (!data.banners) data.banners = [];
+        
+        data.banners.push({ 
+            title, 
+            description, 
+            image: imageBase64 // Simpan string gambar panjang ini
+        });
+        
+        if (await saveDataToServer(data)) {
+            loadBannerGrid();
+            closeModal();
+        }
+    } catch (error) {
+        console.error(error);
+        showError('Gagal memproses gambar. Coba gambar yang lebih kecil.');
     }
 }
 
@@ -561,14 +569,13 @@ function editBanner(index) {
             <textarea id="editBannerDescription" rows="3">${banner.description}</textarea>
         </div>
         <div class="form-group">
-            <label>URL Gambar</label>
-            <input type="text" id="editBannerImage" value="${banner.image}">
-            <small style="display: block; margin-top: 5px; color: #666;">
-                Masukkan path relatif (contoh: images/banner.jpg) atau URL lengkap
-            </small>
+            <label>Ganti Gambar (Opsional)</label>
+            <input type="file" id="editBannerFileInput" accept="image/*" onchange="previewImage(this, 'previewEditBanner')">
+            <small style="color: #666;">Biarkan kosong jika tidak ingin mengubah gambar.</small>
         </div>
         <div style="margin: 10px 0;">
-            <img src="${banner.image}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+            <p style="margin-bottom:5px; font-size:12px;">Gambar saat ini / Preview:</p>
+            <img id="previewEditBanner" src="${banner.image}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #ddd;">
         </div>
         <button class="btn btn-primary" onclick="updateBanner(${index})">Update Banner</button>
     `;
@@ -579,15 +586,31 @@ function editBanner(index) {
 async function updateBanner(index) {
     const title = document.getElementById('editBannerTitle').value;
     const description = document.getElementById('editBannerDescription').value;
-    const image = document.getElementById('editBannerImage').value;
+    const fileInput = document.getElementById('editBannerFileInput');
     
-    if (!title || !description || !image) {
-        showError('Semua field harus diisi!');
+    if (!title || !description) {
+        showError('Judul dan Deskripsi harus diisi!');
         return;
     }
     
     const data = getCurrentData();
-    data.banners[index] = { title, description, image };
+    let imageToSave = data.banners[index].image; // Default pakai gambar lama
+
+    // Jika user upload file baru, kita replace
+    if (fileInput.files.length > 0) {
+        try {
+            imageToSave = await readFileAsDataURL(fileInput.files[0]);
+        } catch (error) {
+            showError('Gagal memproses gambar baru.');
+            return;
+        }
+    }
+    
+    data.banners[index] = { 
+        title, 
+        description, 
+        image: imageToSave 
+    };
     
     if (await saveDataToServer(data)) {
         loadBannerGrid();
@@ -859,7 +882,6 @@ function closeModal() {
     document.getElementById('editModal').classList.remove('active');
 }
 
-// Close modal when clicking outside
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('editModal');
     if (e.target === modal) {
